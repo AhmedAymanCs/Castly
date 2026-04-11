@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "8154300151",
+    "project_id": "castly-57947",
+    "storage_bucket": "castly-57947.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:8154300151:android:f6b641eeac340ec7e69df2",
+        "android_client_info": {
+          "package_name": "com.example.castly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-9e_2fXryOELI5wbHGarYt_g_mNA7tCQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
