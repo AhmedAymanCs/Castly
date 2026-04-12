@@ -34,6 +34,13 @@ class HomePage extends StatelessWidget {
               fontSize: FontSize.s12,
             );
           }
+          if (state.status == HomeStatus.createStreamSuccess) {
+            Navigator.pushNamed(
+              context,
+              Routes.liveStream,
+              arguments: state.liveStreamModel,
+            );
+          }
         },
         builder: (context, state) {
           var cubit = context.read<HomeCubit>();

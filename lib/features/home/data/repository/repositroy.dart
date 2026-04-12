@@ -1,7 +1,7 @@
 import 'package:castly/features/home/data/data_source/data_source.dart';
 import 'package:dartz/dartz.dart';
 import 'package:castly/core/utils/typedef.dart';
-import 'package:castly/features/home/data/model/stream_model.dart';
+import 'package:castly/core/models/stream_model.dart';
 
 abstract class HomeRepository {
   ServerResponse<Unit> createStream(StreamModel stream);

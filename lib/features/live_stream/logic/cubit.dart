@@ -1,5 +1,5 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-import 'package:castly/features/home/data/model/stream_model.dart';
+import 'package:castly/core/models/stream_model.dart';
 import 'package:castly/features/live_stream/logic/state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';

@@ -1,4 +1,4 @@
-import 'package:castly/features/home/data/model/stream_model.dart';
+import 'package:castly/core/models/stream_model.dart';
 import 'package:castly/features/home/data/repository/repositroy.dart';
 import 'package:castly/features/home/logic/state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,19 +13,23 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> createStream(String title) async {
     emit(state.copyWith(status: HomeStatus.loading));
-    final result = await _homeRepository.createStream(
-      StreamModel(
-        title: title,
-        thumbnailUrl: '',
-        streamerName: _auth.currentUser!.displayName ?? 'Unknown',
-        viewerCount: 0,
-        id: const Uuid().v4(),
-        uid: _auth.currentUser!.uid,
-      ),
+    final streamModel = StreamModel(
+      title: title,
+      thumbnailUrl: '',
+      streamerName: _auth.currentUser!.displayName ?? 'Unknown',
+      viewerCount: 0,
+      id: const Uuid().v4(),
+      uid: _auth.currentUser!.uid,
     );
+    final result = await _homeRepository.createStream(streamModel);
     result.fold(
       (error) => emit(state.copyWith(status: HomeStatus.failure)),
-      (_) => emit(state.copyWith(status: HomeStatus.createStreamSuccess)),
+      (stream) => emit(
+        state.copyWith(
+          status: HomeStatus.createStreamSuccess,
+          liveStreamModel: streamModel,
+        ),
+      ),
     );
   }
 

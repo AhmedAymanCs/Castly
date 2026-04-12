@@ -1,6 +1,6 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:castly/core/constants/color_manager.dart';
-import 'package:castly/features/home/data/model/stream_model.dart';
+import 'package:castly/core/models/stream_model.dart';
 import 'package:castly/features/live_stream/logic/cubit.dart';
 import 'package:castly/features/live_stream/logic/state.dart';
 import 'package:flutter/material.dart';
@@ -22,13 +22,15 @@ class LiveStreamPage extends StatelessWidget {
             body: Stack(
               children: [
                 // Camera preview
-                AgoraVideoView(
-                  controller: VideoViewController(
-                    rtcEngine: cubit.engine,
-                    canvas: const VideoCanvas(uid: 0),
-                  ),
-                ),
-
+                if (state.isLive)
+                  AgoraVideoView(
+                    controller: VideoViewController(
+                      rtcEngine: cubit.engine,
+                      canvas: const VideoCanvas(uid: 0),
+                    ),
+                  )
+                else
+                  const SizedBox.expand(),
                 // Top bar
                 Positioned(
                   top: 48,

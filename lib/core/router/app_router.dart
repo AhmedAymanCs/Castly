@@ -1,4 +1,6 @@
+import 'package:castly/core/models/stream_model.dart';
 import 'package:castly/features/home/presentation/home_screen.dart';
+import 'package:castly/features/live_stream/presentation/live_stream_screen.dart';
 import 'package:castly/features/profile/presentation/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:castly/core/database/local/secure_storage/secure_storage_helper.dart';
@@ -27,6 +29,11 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => HomePage());
       case Routes.profile:
         return MaterialPageRoute(builder: (_) => ProfilePage());
+      case Routes.liveStream:
+        final streamModel = settings.arguments as StreamModel;
+        return MaterialPageRoute(
+          builder: (_) => LiveStreamPage(streamModel: streamModel),
+        );
 
       default:
         return MaterialPageRoute(

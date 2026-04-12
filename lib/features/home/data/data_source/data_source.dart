@@ -1,5 +1,5 @@
 import 'package:castly/core/constants/app_constants.dart';
-import 'package:castly/features/home/data/model/stream_model.dart';
+import 'package:castly/core/models/stream_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class HomeDataSource {
