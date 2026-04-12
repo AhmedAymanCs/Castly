@@ -1,6 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:castly/core/services/local_notification_service.dart';
 
+Future<void> _handlerBackgroundMessage(RemoteMessage message) async {}
+
 class FCMService {
   final LocalNotificationService _localNotificationService;
   FCMService(this._localNotificationService);
@@ -16,7 +18,6 @@ class FCMService {
     return token ?? '';
   }
 
-  Future<void> _handlerBackgroundMessage(RemoteMessage message) async {}
   void _handlerForegroundMessage() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       _localNotificationService.showNotification(message);

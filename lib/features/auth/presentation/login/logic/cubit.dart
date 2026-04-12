@@ -47,7 +47,6 @@ class LoginCubit extends Cubit<LoginState> {
     final result = await _authRepository.signInWithGoogle();
     result.fold((r) {
       emit(LoginState(status: FormFailure(r)));
-      print(r);
     }, (l) => emit(LoginState(status: FormSuccess(l))));
   }
 }

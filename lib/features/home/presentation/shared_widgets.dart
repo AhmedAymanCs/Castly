@@ -106,6 +106,7 @@ class StreamCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: ColorManager.backgroundWhite,
           borderRadius: BorderRadius.circular(16),
@@ -133,7 +134,7 @@ class StreamCard extends StatelessWidget {
                     Image.network(
                       thumbnailUrl,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
+                      errorBuilder: (_, _, _) => Container(
                         color: ColorManager.backgroundGray100,
                         child: const Icon(
                           Icons.play_circle_outline,
@@ -152,46 +153,27 @@ class StreamCard extends StatelessWidget {
                 ),
               ),
             ),
-
-            // Info row
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 18,
-                    backgroundImage: NetworkImage(streamerAvatar),
-                    backgroundColor: ColorManager.backgroundGray100,
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          style: TextStyle(
-                            fontSize: FontSize.s12,
-                            fontWeight: FontWeightManager.bold,
-                            color: ColorManager.textHeading,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          streamerName,
-                          style: TextStyle(
-                            fontSize: FontSize.s12,
-                            color: ColorManager.textSecondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+            const SizedBox(width: 10),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: FontSize.s12,
+                fontWeight: FontWeightManager.bold,
+                color: ColorManager.textHeading,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 2),
+            Text(
+              streamerName,
+              style: TextStyle(
+                fontSize: FontSize.s12,
+                color: ColorManager.textSecondary,
               ),
             ),
+
+            // Info row
           ],
         ),
       ),
