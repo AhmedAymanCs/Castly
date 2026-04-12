@@ -1,16 +1,39 @@
 class StreamModel {
   final String id;
   final String title;
-  final int viewerCount;
-  final String thumbnail;
-  final String streamerId;
   final String streamerName;
+  final String thumbnailUrl;
+  final int viewerCount;
+  final String uid;
+
   const StreamModel({
     required this.id,
     required this.title,
-    required this.viewerCount,
-    required this.thumbnail,
-    required this.streamerId,
     required this.streamerName,
+    required this.thumbnailUrl,
+    required this.viewerCount,
+    required this.uid,
   });
+
+  factory StreamModel.fromJson(Map<String, dynamic> json) {
+    return StreamModel(
+      id: json['id'] ?? '',
+      title: json['title'] ?? '',
+      streamerName: json['streamerName'] ?? '',
+      thumbnailUrl: json['thumbnailUrl'] ?? '',
+      viewerCount: json['viewerCount'] ?? 0,
+      uid: json['uid'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'streamerName': streamerName,
+      'thumbnailUrl': thumbnailUrl,
+      'viewerCount': viewerCount,
+      'uid': uid,
+    };
+  }
 }

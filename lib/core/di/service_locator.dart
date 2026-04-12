@@ -1,3 +1,5 @@
+import 'package:castly/features/home/data/data_source/data_source.dart';
+import 'package:castly/features/home/data/repository/repositroy.dart';
 import 'package:castly/features/profile/data/data_source/data_source.dart';
 import 'package:castly/features/profile/data/repository/repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,12 +19,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 final getIt = GetIt.instance;
 
 void intiSetupLocator() {
+  _setupFirestoreServiceLocator();
   _setupSecureStorageServiceLocator();
   _setupAuthRepositoryLocator();
-  _setupFirestoreServiceLocator();
   _setupNotificationServiceLocator();
   _setupSupabaseServiceLocator();
   _setupProfileLocator();
+  _setupHomeLocator();
 }
 
 Future<void> _setupSupabaseServiceLocator() async {
@@ -95,5 +98,14 @@ void _setupProfileLocator() {
   );
   getIt.registerLazySingleton<ProfileRepository>(
     () => ProfileRepositoryImpl(getIt<ProfileDataSource>()),
+  );
+}
+
+void _setupHomeLocator() {
+  getIt.registerLazySingleton<HomeDataSource>(
+    () => HomeDataSourceImpl(getIt<FirebaseFirestore>()),
+  );
+  getIt.registerLazySingleton<HomeRepository>(
+    () => HomeRepositoryImpl(getIt<HomeDataSource>()),
   );
 }

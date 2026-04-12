@@ -1,8 +1,10 @@
 import 'package:castly/core/constants/color_manager.dart';
 import 'package:castly/core/constants/font_manager.dart';
 import 'package:castly/core/constants/string_manager.dart';
+import 'package:castly/core/widgets/cutom_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LiveBadge extends StatelessWidget {
   const LiveBadge({super.key});
@@ -86,7 +88,6 @@ class ViewerCount extends StatelessWidget {
 class StreamCard extends StatelessWidget {
   final String thumbnailUrl;
   final String streamerName;
-  final String streamerAvatar;
   final String title;
   final int viewerCount;
   final VoidCallback onTap;
@@ -95,7 +96,6 @@ class StreamCard extends StatelessWidget {
     super.key,
     required this.thumbnailUrl,
     required this.streamerName,
-    required this.streamerAvatar,
     required this.title,
     required this.viewerCount,
     required this.onTap,
@@ -214,6 +214,128 @@ class GoLiveButton extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class GoLiveSheet extends StatefulWidget {
+  final Function(String title) onGoLive;
+  const GoLiveSheet({super.key, required this.onGoLive});
+
+  @override
+  State<GoLiveSheet> createState() => _GoLiveSheetState();
+}
+
+class _GoLiveSheetState extends State<GoLiveSheet> {
+  final TextEditingController _titleController = TextEditingController();
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 20,
+        right: 20,
+        top: 20,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Handle
+          Center(
+            child: Container(
+              width: 40.w,
+              height: 4.h,
+              decoration: BoxDecoration(
+                color: ColorManager.gray200,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+          ),
+          SizedBox(height: 20.h),
+          Text(
+            'Go Live',
+            style: TextStyle(
+              fontSize: FontSize.s20,
+              fontWeight: FontWeight.bold,
+              color: ColorManager.textHeading,
+            ),
+          ),
+          SizedBox(height: 20.h),
+          // Title
+          CustomFormField(
+            controller: _titleController,
+            hint: 'Stream title...',
+            preicon: Icons.live_tv_outlined,
+          ),
+          SizedBox(height: 24.h),
+
+          // Buttons
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: ColorManager.gray200),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  child: const Text(
+                    StringManager.cancel,
+                    style: TextStyle(color: ColorManager.textSecondary),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_titleController.text.trim().isEmpty) {
+                      Fluttertoast.showToast(
+                        msg: StringManager.enterTitle,
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: FontSize.s12,
+                      );
+                      return;
+                    }
+
+                    Navigator.pop(context);
+                    widget.onGoLive(_titleController.text.trim());
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorManager.coralPrimary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  child: const Text(
+                    StringManager.goLive,
+                    style: TextStyle(
+                      color: ColorManager.backgroundWhite,
+                      fontWeight: FontWeightManager.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

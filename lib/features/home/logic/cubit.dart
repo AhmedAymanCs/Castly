@@ -1,6 +1,41 @@
+import 'package:castly/features/home/data/model/stream_model.dart';
+import 'package:castly/features/home/data/repository/repositroy.dart';
 import 'package:castly/features/home/logic/state.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(HomeState());
+  final HomeRepository _homeRepository;
+  final FirebaseAuth _auth;
+
+  HomeCubit(this._homeRepository, this._auth) : super(const HomeState());
+
+  Future<void> createStream(String title) async {
+    emit(state.copyWith(status: HomeStatus.loading));
+    final result = await _homeRepository.createStream(
+      StreamModel(
+        title: title,
+        thumbnailUrl: '',
+        streamerName: _auth.currentUser!.displayName ?? 'Unknown',
+        viewerCount: 0,
+        id: const Uuid().v4(),
+        uid: _auth.currentUser!.uid,
+      ),
+    );
+    result.fold(
+      (error) => emit(state.copyWith(status: HomeStatus.failure)),
+      (_) => emit(state.copyWith(status: HomeStatus.createStreamSuccess)),
+    );
+  }
+
+  Future<void> getCurrentStreams() async {
+    emit(state.copyWith(status: HomeStatus.loading));
+    final result = await _homeRepository.getCurrentStreams();
+    result.fold(
+      (error) => emit(state.copyWith(status: HomeStatus.failure)),
+      (streams) =>
+          emit(state.copyWith(status: HomeStatus.success, streams: streams)),
+    );
+  }
 }

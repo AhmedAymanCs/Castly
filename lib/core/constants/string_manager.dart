@@ -33,6 +33,8 @@ class StringManager {
   static const String goLive = 'Go Live';
   static const String camera = 'camera';
   static const String gallery = 'gallery';
+  static const String cancel = 'Cancel';
+  static const String enterTitle = 'Enter title';
 
   //profile
   static const String profile = 'Profile';
