@@ -18,7 +18,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 final getIt = GetIt.instance;
 
-void intiSetupLocator() {
+void intitSetupLocator() {
   _setupFirestoreServiceLocator();
   _setupSecureStorageServiceLocator();
   _setupAuthRepositoryLocator();

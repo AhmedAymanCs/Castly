@@ -14,11 +14,11 @@ abstract class AuthRepository {
   ServerResponse<UserModel> login({
     required String email,
     required String password,
-    bool rememberMe = false,
+    required bool rememberMe,
   });
   ServerResponse<Unit> register(RegisterParamsModel params);
   ServerResponse<void> sendPasswordResetEmail({required String email});
-  ServerResponse<UserModel> signInWithGoogle();
+  ServerResponse<UserModel> signInWithGoogle({required bool rememberMe});
 }
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -35,7 +35,7 @@ class AuthRepositoryImpl implements AuthRepository {
   ServerResponse<UserModel> login({
     required String email,
     required String password,
-    bool rememberMe = false,
+    required bool rememberMe,
   }) async {
     try {
       final userCredential = await authRemoteDataSource.login(
@@ -103,7 +103,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  ServerResponse<UserModel> signInWithGoogle() async {
+  ServerResponse<UserModel> signInWithGoogle({required bool rememberMe}) async {
     try {
       final userCredential = await authRemoteDataSource.signInWithGoogle();
       if (userCredential.user != null) {
@@ -125,6 +125,10 @@ class AuthRepositoryImpl implements AuthRepository {
             'phone': '',
             'image': userCredential.user!.photoURL,
           });
+        }
+        if (rememberMe) {
+          String sessionData = jsonEncode(userModel.toJson());
+          await secureStorageHelper.saveUserData(sessionData);
         }
 
         return Right(userModel);

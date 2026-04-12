@@ -15,7 +15,7 @@ void main() async {
     Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
     dotenv.load(fileName: ".env"),
   ]).then((_) {
-    intiSetupLocator();
+    intitSetupLocator();
     runApp(const MyApp());
   });
 }
