@@ -18,6 +18,7 @@ abstract class AuthRepository {
   });
   ServerResponse<Unit> register(RegisterParamsModel params);
   ServerResponse<void> sendPasswordResetEmail({required String email});
+  ServerResponse<UserModel> signInWithGoogle();
 }
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -96,6 +97,41 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       await authRemoteDataSource.sendPasswordResetEmail(email: email);
       return const Right(unit);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  ServerResponse<UserModel> signInWithGoogle() async {
+    try {
+      final userCredential = await authRemoteDataSource.signInWithGoogle();
+      if (userCredential.user != null) {
+        final uid = userCredential.user!.uid;
+        final userDoc = await firestore
+            .collection(AppConstants.usersCollectionName)
+            .doc(uid)
+            .get();
+
+        late UserModel userModel;
+
+        if (userDoc.exists && userDoc.data() != null) {
+          userModel = UserModel.fromJson({...userDoc.data()!, 'uId': uid});
+        } else {
+          userModel = UserModel.fromJson({
+            'uId': uid,
+            'email': userCredential.user!.email,
+            'name': userCredential.user!.displayName,
+            'phone': '',
+            'image': userCredential.user!.photoURL,
+          });
+        }
+
+        return Right(userModel);
+      }
+      return Left('Authentication failed');
+    } on FirebaseAuthException catch (e) {
+      return Left(e.message ?? 'Something went wrong');
     } catch (e) {
       return Left(e.toString());
     }

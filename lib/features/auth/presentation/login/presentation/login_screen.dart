@@ -140,6 +140,41 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.pushNamed(context, Routes.register);
                     },
                   ),
+                  SizedBox(height: 16.h),
+                  BlocConsumer<LoginCubit, LoginState>(
+                    listener: (context, state) {
+                      if (state.status is FormSuccess) {
+                        final userModel =
+                            (state.status as FormSuccess).userModel;
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          Routes.home,
+                          (_) => false,
+                          arguments: userModel,
+                        );
+                      }
+                      if (state.status is FormFailure) {
+                        final errorMessage =
+                            (state.status as FormFailure).message;
+                        Fluttertoast.showToast(
+                          msg: errorMessage,
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      LoginCubit cubit = context.read<LoginCubit>();
+                      if (state.status is FormLoading) {
+                        return const CircularProgressIndicator();
+                      }
+                      return GoogleSignInButton(
+                        onPressed: () => cubit.signInWithGoogle(),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

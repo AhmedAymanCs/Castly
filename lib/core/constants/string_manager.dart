@@ -26,6 +26,7 @@ class StringManager {
   static const String forgotPassword = 'Forgot password';
   static const String signUp = 'Sign up';
   static const String dontHaveAccount = 'Don\'t have an account?';
+  static const String continueWithGoogle = 'Continue with Google';
 
   //home
   static const String live = 'LIVE';

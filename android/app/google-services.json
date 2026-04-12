@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "8154300151",
+    "firebase_url": "https://castly-57947-default-rtdb.firebaseio.com",
     "project_id": "castly-57947",
     "storage_bucket": "castly-57947.firebasestorage.app"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.castly"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "8154300151-g04p0m9pimesqaue111193eo1ln815dt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.castly",
+            "certificate_hash": "9bc7871d8a15e824b09b9118566c5350a018a662"
+          }
+        },
+        {
+          "client_id": "8154300151-qlnud7fe58k0eav07qlsn2rqh9g98v7t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB-9e_2fXryOELI5wbHGarYt_g_mNA7tCQ"
@@ -20,7 +34,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "8154300151-qlnud7fe58k0eav07qlsn2rqh9g98v7t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "8154300151-06cs1a6jcvjsroi690dr8vkedo5ef1en.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.castly"
+              }
+            }
+          ]
         }
       }
     }

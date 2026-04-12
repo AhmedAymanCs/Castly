@@ -1,4 +1,5 @@
 import 'package:castly/core/constants/string_manager.dart';
+import 'package:castly/core/router/routes.dart';
 import 'package:castly/features/home/presentation/shared_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:castly/core/constants/color_manager.dart';
@@ -21,7 +22,7 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.person_outline, color: ColorManager.gray900),
-            onPressed: () {},
+            onPressed: () => Navigator.pushNamed(context, Routes.profile),
           ),
         ],
       ),
