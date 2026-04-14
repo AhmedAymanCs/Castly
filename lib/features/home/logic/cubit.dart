@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:castly/core/constants/app_constants.dart';
 import 'package:castly/core/models/stream_model.dart';
 import 'package:castly/features/home/data/repository/repositroy.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class HomeCubit extends Cubit<HomeState> {
   final HomeRepository _homeRepository;
   final FirebaseAuth _auth;
+  StreamSubscription? _streamsSubscription;
 
   HomeCubit(this._homeRepository, this._auth) : super(const HomeState());
 
@@ -25,7 +27,7 @@ class HomeCubit extends Cubit<HomeState> {
     final result = await _homeRepository.createStream(streamModel);
     result.fold(
       (error) => emit(state.copyWith(status: HomeStatus.failure)),
-      (stream) => emit(
+      (_) => emit(
         state.copyWith(
           status: HomeStatus.createStreamSuccess,
           liveStreamModel: streamModel,
@@ -36,11 +38,26 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> getCurrentStreams() async {
     emit(state.copyWith(status: HomeStatus.loading));
-    final result = await _homeRepository.getCurrentStreams();
-    result.fold(
-      (error) => emit(state.copyWith(status: HomeStatus.failure)),
-      (streams) =>
-          emit(state.copyWith(status: HomeStatus.success, streams: streams)),
+    _streamsSubscription = _homeRepository.getCurrentStreams().listen(
+      (streams) {
+        if (isClosed) return;
+        emit(state.copyWith(status: HomeStatus.success, streams: streams));
+      },
+      onError: (error) {
+        if (isClosed) return;
+        emit(
+          state.copyWith(
+            status: HomeStatus.failure,
+            errorMessage: error.toString(),
+          ),
+        );
+      },
     );
+  }
+
+  @override
+  Future<void> close() {
+    _streamsSubscription?.cancel();
+    return super.close();
   }
 }

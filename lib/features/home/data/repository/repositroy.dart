@@ -5,7 +5,7 @@ import 'package:castly/core/models/stream_model.dart';
 
 abstract class HomeRepository {
   ServerResponse<Unit> createStream(StreamModel stream);
-  ServerResponse<List<StreamModel>> getCurrentStreams();
+  Stream<List<StreamModel>> getCurrentStreams();
 }
 
 class HomeRepositoryImpl implements HomeRepository {
@@ -24,12 +24,7 @@ class HomeRepositoryImpl implements HomeRepository {
   }
 
   @override
-  ServerResponse<List<StreamModel>> getCurrentStreams() async {
-    try {
-      final streams = await _homeDataSource.getCurrentStreams();
-      return Right(streams);
-    } catch (e) {
-      return Left(e.toString());
-    }
+  Stream<List<StreamModel>> getCurrentStreams() {
+    return _homeDataSource.getCurrentStreams();
   }
 }
