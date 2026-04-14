@@ -1,8 +1,8 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:castly/core/constants/color_manager.dart';
 import 'package:castly/core/models/stream_model.dart';
-import 'package:castly/features/live_stream/logic/cubit.dart';
-import 'package:castly/features/live_stream/logic/state.dart';
+import 'package:castly/features/streams/live_stream/logic/cubit.dart';
+import 'package:castly/features/streams/live_stream/logic/state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
