@@ -1,3 +1,4 @@
+import 'package:castly/core/constants/app_constants.dart';
 import 'package:castly/core/models/stream_model.dart';
 import 'package:castly/features/home/data/repository/repositroy.dart';
 import 'package:castly/features/home/logic/state.dart';
@@ -17,8 +18,9 @@ class HomeCubit extends Cubit<HomeState> {
       thumbnailUrl: '',
       streamerName: _auth.currentUser!.displayName ?? 'Unknown',
       viewerCount: 0,
-      id: 'test',
+      id: AppConstants.channelName,
       uid: _auth.currentUser!.uid,
+      isLive: true,
     );
     final result = await _homeRepository.createStream(streamModel);
     result.fold(

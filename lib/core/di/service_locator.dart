@@ -2,6 +2,10 @@ import 'package:castly/features/home/data/data_source/data_source.dart';
 import 'package:castly/features/home/data/repository/repositroy.dart';
 import 'package:castly/features/profile/data/data_source/data_source.dart';
 import 'package:castly/features/profile/data/repository/repo.dart';
+import 'package:castly/features/streams/live_stream/data/data_source/data_source.dart';
+import 'package:castly/features/streams/live_stream/data/repository/repo.dart';
+import 'package:castly/features/streams/watch_stream/data/data_source/data_source.dart';
+import 'package:castly/features/streams/watch_stream/data/repository/repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -26,6 +30,7 @@ void intitSetupLocator() {
   _setupSupabaseServiceLocator();
   _setupProfileLocator();
   _setupHomeLocator();
+  _setupStreamLocator();
 }
 
 Future<void> _setupSupabaseServiceLocator() async {
@@ -107,5 +112,20 @@ void _setupHomeLocator() {
   );
   getIt.registerLazySingleton<HomeRepository>(
     () => HomeRepositoryImpl(getIt<HomeDataSource>()),
+  );
+}
+
+void _setupStreamLocator() {
+  getIt.registerLazySingleton<LiveStreamDataSource>(
+    () => LiveStreamDataSourceImpl(getIt<FirebaseFirestore>()),
+  );
+  getIt.registerLazySingleton<WatchStreamDataSource>(
+    () => WatchStreamDataSourceImpl(getIt<FirebaseFirestore>()),
+  );
+  getIt.registerLazySingleton<LiveStreamRepository>(
+    () => LiveStreamRepositoryImpl(getIt<LiveStreamDataSource>()),
+  );
+  getIt.registerLazySingleton<WatchStreamRepository>(
+    () => WatchStreamRepositoryImpl(getIt<WatchStreamDataSource>()),
   );
 }

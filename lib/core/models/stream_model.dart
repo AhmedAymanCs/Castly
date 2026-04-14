@@ -5,6 +5,7 @@ class StreamModel {
   final String thumbnailUrl;
   final int viewerCount;
   final String uid;
+  final bool isLive;
 
   const StreamModel({
     required this.id,
@@ -13,6 +14,7 @@ class StreamModel {
     required this.thumbnailUrl,
     required this.viewerCount,
     required this.uid,
+    required this.isLive,
   });
 
   factory StreamModel.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class StreamModel {
       thumbnailUrl: json['thumbnailUrl'] ?? '',
       viewerCount: json['viewerCount'] ?? 0,
       uid: json['uid'] ?? '',
+      isLive: json['isLive'] ?? false,
     );
   }
 
@@ -34,6 +37,7 @@ class StreamModel {
       'thumbnailUrl': thumbnailUrl,
       'viewerCount': viewerCount,
       'uid': uid,
+      'isLive': isLive,
     };
   }
 }

@@ -24,6 +24,7 @@ class HomeDataSourceImpl implements HomeDataSource {
   Future<List<StreamModel>> getCurrentStreams() async {
     final snapshot = await _firestore
         .collection(AppConstants.streamsCollectionName)
+        .where('isLive', isEqualTo: true)
         .get();
 
     return snapshot.docs

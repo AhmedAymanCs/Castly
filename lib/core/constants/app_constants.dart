@@ -5,4 +5,5 @@ class AppConstants {
   static const String userSession = 'user_session';
   static const String dateTimeFormat = 'dd MMM yyyy - hh:mm a';
   static const String themeStorageKey = 'theme';
+  static const String channelName = 'test';
 }

@@ -63,8 +63,7 @@ class LiveStreamPage extends StatelessWidget {
                     const Spacer(),
                     GestureDetector(
                       onTap: () async {
-                        await cubit.endStream();
-                        if (context.mounted) Navigator.pop(context);
+                        await cubit.endStream(context);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
