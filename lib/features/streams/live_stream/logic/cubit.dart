@@ -15,15 +15,18 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
     emit(state.copyWith(status: LiveStreamStatus.loading));
     try {
       await [Permission.camera, Permission.microphone].request();
+
       engine = createAgoraRtcEngine();
       await engine.initialize(
-        RtcEngineContext(appId: dotenv.env['AGORA_APP_ID']!),
+        RtcEngineContext(
+          appId: dotenv.env['AGORA_APP_ID']!,
+          channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
+        ),
       );
 
       await engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
       await engine.enableVideo();
       await engine.startPreview();
-
       await engine.joinChannel(
         token: dotenv.env['AGORA_TEMP_TOKEN']!,
         channelId: streamModel.id,

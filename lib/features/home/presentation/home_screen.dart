@@ -80,7 +80,11 @@ class HomePage extends StatelessWidget {
                           streamerName: state.streams[index].streamerName,
                           title: state.streams[index].title,
                           viewerCount: state.streams[index].viewerCount,
-                          onTap: () {},
+                          onTap: () => Navigator.pushNamed(
+                            context,
+                            Routes.watchStream,
+                            arguments: state.streams[index],
+                          ),
                         );
                       },
                     ),

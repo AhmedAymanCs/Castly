@@ -1,7 +1,9 @@
 import 'package:castly/core/models/stream_model.dart';
 import 'package:castly/features/home/presentation/home_screen.dart';
+import 'package:castly/features/streams/live_stream/logic/cubit.dart';
 import 'package:castly/features/streams/live_stream/presentation/live_stream_screen.dart';
 import 'package:castly/features/profile/presentation/profile_screen.dart';
+import 'package:castly/features/streams/watch_stream/presentation/watch_stream_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:castly/core/database/local/secure_storage/secure_storage_helper.dart';
 import 'package:castly/core/di/service_locator.dart';
@@ -10,6 +12,7 @@ import 'package:castly/features/auth/presentation/forget_passoword/presentation/
 import 'package:castly/features/auth/presentation/login/presentation/login_screen.dart';
 import 'package:castly/features/auth/presentation/register/presentation/register_screen.dart';
 import 'package:castly/features/splash/screens/splash_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppRouter {
   static Route onGenerateRoute(RouteSettings settings) {
@@ -32,7 +35,16 @@ class AppRouter {
       case Routes.liveStream:
         final streamModel = settings.arguments as StreamModel;
         return MaterialPageRoute(
-          builder: (_) => LiveStreamPage(streamModel: streamModel),
+          builder: (_) => BlocProvider(
+            create: (BuildContext context) =>
+                LiveStreamCubit(streamModel)..initAgora(),
+            child: LiveStreamPage(),
+          ),
+        );
+      case Routes.watchStream:
+        final streamModel = settings.arguments as StreamModel;
+        return MaterialPageRoute(
+          builder: (_) => WatchPage(streamModel: streamModel),
         );
 
       default:

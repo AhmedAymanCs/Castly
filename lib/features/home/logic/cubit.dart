@@ -3,7 +3,6 @@ import 'package:castly/features/home/data/repository/repositroy.dart';
 import 'package:castly/features/home/logic/state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uuid/uuid.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   final HomeRepository _homeRepository;
@@ -18,7 +17,7 @@ class HomeCubit extends Cubit<HomeState> {
       thumbnailUrl: '',
       streamerName: _auth.currentUser!.displayName ?? 'Unknown',
       viewerCount: 0,
-      id: const Uuid().v4(),
+      id: 'test',
       uid: _auth.currentUser!.uid,
     );
     final result = await _homeRepository.createStream(streamModel);
