@@ -11,7 +11,12 @@ class ChatCubit extends Cubit<ChatState> {
 
   ChatCubit(this._repository) : super(const ChatState());
 
-  Future<void> sendMessage(MessageModel message, String streamId) async {
+  Future<void> sendMessage(String text, String streamId) async {
+    final MessageModel message = MessageModel(
+      message: text,
+      sender: 'Ahmed',
+      timestamp: DateTime.now(),
+    );
     final result = await _repository.sendMessage(message, streamId);
     result.fold(
       (error) =>

@@ -47,7 +47,8 @@ class AppRouter {
               ),
               BlocProvider<ChatCubit>(
                 create: (BuildContext context) =>
-                    ChatCubit(getIt<ChatRepository>()),
+                    ChatCubit(getIt<ChatRepository>())
+                      ..receiveMessages(streamModel.id),
               ),
             ],
             child: LiveStreamPage(),

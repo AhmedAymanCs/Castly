@@ -104,12 +104,12 @@ class LiveStreamPage extends StatelessWidget {
               ),
 
               // Chat overlay
-              const Positioned(
+              Positioned(
                 bottom: 100,
                 left: 16,
                 right: 16,
                 height: 250,
-                child: ChatView(),
+                child: ChatView(streamId: cubit.streamModel.id),
               ),
 
               // Bottom controls

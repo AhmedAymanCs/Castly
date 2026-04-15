@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatView extends StatefulWidget {
-  const ChatView({super.key});
+  final String streamId;
+  const ChatView({super.key, required this.streamId});
 
   @override
   State<ChatView> createState() => _ChatViewState();
@@ -25,14 +26,15 @@ class _ChatViewState extends State<ChatView> {
   Widget build(BuildContext context) {
     return BlocBuilder<ChatCubit, ChatState>(
       builder: (context, state) {
+        final cubit = context.read<ChatCubit>();
         return Column(
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: 10,
+                itemCount: state.messages.length,
                 itemBuilder: (context, index) {
                   return Text(
-                    'Item $index',
+                    state.messages[index].message,
                     style: const TextStyle(color: Colors.white),
                   );
                 },
@@ -51,8 +53,11 @@ class _ChatViewState extends State<ChatView> {
                   IconButton(
                     icon: const Icon(Icons.send, color: Colors.white),
                     onPressed: () {
-                      // TODO: send message
-                      _messageController.clear();
+                      cubit
+                          .sendMessage(_messageController.text, widget.streamId)
+                          .then((_) {
+                            _messageController.clear();
+                          });
                     },
                   ),
                 ],
