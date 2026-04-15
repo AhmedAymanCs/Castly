@@ -10,8 +10,8 @@ class MessageModel {
   });
   factory MessageModel.fromMap(Map<String, dynamic> map) {
     return MessageModel(
-      message: map['message'] as String,
-      sender: map['sender'] as String,
+      message: map['message'] ?? '',
+      sender: map['sender'] ?? '',
       timestamp: DateTime.parse(map['timestamp'] as String),
     );
   }
