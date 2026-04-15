@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class ChatDataSource {
   Future<void> sendMessage(MessageModel message, String straemId);
-  Stream<MessageModel> receiveMessages();
+  Stream<List<MessageModel>> receiveMessages(String streamId);
 }
 
 class ChatDataSourceImpl implements ChatDataSource {
@@ -21,8 +21,17 @@ class ChatDataSourceImpl implements ChatDataSource {
   }
 
   @override
-  Stream<MessageModel> receiveMessages() {
-    // TODO: implement receiveMessages
-    throw UnimplementedError();
+  Stream<List<MessageModel>> receiveMessages(String streamId) {
+    return _firestore
+        .collection(AppConstants.streamsCollectionName)
+        .doc(streamId)
+        .collection(AppConstants.messagesCollectionName)
+        .orderBy('timestamp', descending: false)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => MessageModel.fromMap(doc.data()))
+              .toList(),
+        );
   }
 }

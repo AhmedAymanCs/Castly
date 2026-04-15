@@ -5,7 +5,7 @@ import 'package:dartz/dartz.dart';
 
 abstract class ChatRepository {
   ServerResponse<Unit> sendMessage(MessageModel message, String streamId);
-  ServerResponse<Stream<MessageModel>> receiveMessages();
+  ServerResponse<Stream<List<MessageModel>>> receiveMessages(String streamId);
 }
 
 class ChatRepositoryImpl implements ChatRepository {
@@ -26,9 +26,11 @@ class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  ServerResponse<Stream<MessageModel>> receiveMessages() async {
+  ServerResponse<Stream<List<MessageModel>>> receiveMessages(
+    String streamId,
+  ) async {
     try {
-      final stream = _dataSource.receiveMessages();
+      final stream = _dataSource.receiveMessages(streamId);
       return right(stream);
     } catch (e) {
       return left(e.toString());
