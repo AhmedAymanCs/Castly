@@ -2,6 +2,8 @@ import 'package:castly/features/home/data/data_source/data_source.dart';
 import 'package:castly/features/home/data/repository/repositroy.dart';
 import 'package:castly/features/profile/data/data_source/data_source.dart';
 import 'package:castly/features/profile/data/repository/repo.dart';
+import 'package:castly/features/streams/chat/data/data_source/data_source.dart';
+import 'package:castly/features/streams/chat/data/repository/repo.dart';
 import 'package:castly/features/streams/live_stream/data/data_source/data_source.dart';
 import 'package:castly/features/streams/live_stream/data/repository/repo.dart';
 import 'package:castly/features/streams/watch_stream/data/data_source/data_source.dart';
@@ -125,10 +127,17 @@ void _setupStreamLocator() {
   getIt.registerLazySingleton<WatchStreamDataSource>(
     () => WatchStreamDataSourceImpl(getIt<FirebaseFirestore>()),
   );
+  getIt.registerLazySingleton<ChatDataSource>(
+    () => ChatDataSourceImpl(getIt<FirebaseFirestore>()),
+  );
+
   getIt.registerLazySingleton<LiveStreamRepository>(
     () => LiveStreamRepositoryImpl(getIt<LiveStreamDataSource>()),
   );
   getIt.registerLazySingleton<WatchStreamRepository>(
     () => WatchStreamRepositoryImpl(getIt<WatchStreamDataSource>()),
+  );
+  getIt.registerLazySingleton<ChatRepository>(
+    () => ChatRepositoryImpl(getIt<ChatDataSource>()),
   );
 }

@@ -1,5 +1,7 @@
 import 'package:castly/core/models/stream_model.dart';
 import 'package:castly/features/home/presentation/home_screen.dart';
+import 'package:castly/features/streams/chat/data/repository/repo.dart';
+import 'package:castly/features/streams/chat/logic/cubit.dart';
 import 'package:castly/features/streams/live_stream/data/repository/repo.dart';
 import 'package:castly/features/streams/live_stream/logic/cubit.dart';
 import 'package:castly/features/streams/live_stream/presentation/live_stream_screen.dart';
@@ -36,10 +38,18 @@ class AppRouter {
       case Routes.liveStream:
         final streamModel = settings.arguments as StreamModel;
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (BuildContext context) =>
-                LiveStreamCubit(streamModel, getIt<LiveStreamRepository>())
-                  ..initAgora(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<LiveStreamCubit>(
+                create: (BuildContext context) =>
+                    LiveStreamCubit(streamModel, getIt<LiveStreamRepository>())
+                      ..initAgora(),
+              ),
+              BlocProvider<ChatCubit>(
+                create: (BuildContext context) =>
+                    ChatCubit(getIt<ChatRepository>()),
+              ),
+            ],
             child: LiveStreamPage(),
           ),
         );
