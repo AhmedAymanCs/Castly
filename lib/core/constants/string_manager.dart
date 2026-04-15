@@ -42,4 +42,7 @@ class StringManager {
   static const String notFound = 'Not Found';
   static const String editProfile = 'Edit Profile';
   static const String logout = 'Logout';
+
+  //streams
+  static const String writeMessage = 'Write a message ...';
 }

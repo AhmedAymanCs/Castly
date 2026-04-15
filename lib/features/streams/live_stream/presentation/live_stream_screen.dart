@@ -1,5 +1,6 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:castly/core/constants/color_manager.dart';
+import 'package:castly/features/streams/chat/presentation/chat_view.dart';
 import 'package:castly/features/streams/live_stream/logic/cubit.dart';
 import 'package:castly/features/streams/live_stream/logic/state.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class LiveStreamPage extends StatelessWidget {
                 )
               else
                 const SizedBox.expand(),
+
               // Top bar
               Positioned(
                 top: 48,
@@ -99,6 +101,15 @@ class LiveStreamPage extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
+              ),
+
+              // Chat overlay
+              const Positioned(
+                bottom: 100,
+                left: 16,
+                right: 16,
+                height: 250,
+                child: ChatView(),
               ),
 
               // Bottom controls
