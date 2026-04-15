@@ -117,7 +117,10 @@ void _setupHomeLocator() {
 
 void _setupStreamLocator() {
   getIt.registerLazySingleton<LiveStreamDataSource>(
-    () => LiveStreamDataSourceImpl(getIt<FirebaseFirestore>()),
+    () => LiveStreamDataSourceImpl(
+      getIt<FirebaseFirestore>(),
+      getIt<SupabaseClient>(),
+    ),
   );
   getIt.registerLazySingleton<WatchStreamDataSource>(
     () => WatchStreamDataSourceImpl(getIt<FirebaseFirestore>()),

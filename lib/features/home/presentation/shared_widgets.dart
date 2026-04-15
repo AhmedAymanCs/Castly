@@ -133,7 +133,7 @@ class StreamCard extends StatelessWidget {
                   children: [
                     Image.network(
                       thumbnailUrl,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                       errorBuilder: (_, _, _) => Container(
                         color: ColorManager.backgroundGray100,
                         child: const Icon(

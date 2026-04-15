@@ -5,6 +5,7 @@ import 'package:castly/features/streams/live_stream/logic/state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class LiveStreamCubit extends Cubit<LiveStreamState> {
@@ -42,6 +43,8 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
       );
 
       emit(state.copyWith(status: LiveStreamStatus.live, isLive: true));
+
+      _takeThumbnailAfterDelay();
     } catch (e) {
       emit(
         state.copyWith(
@@ -50,6 +53,16 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
         ),
       );
     }
+  }
+
+  Future<void> _takeThumbnailAfterDelay() async {
+    await Future.delayed(const Duration(seconds: 10));
+    final dir = await getTemporaryDirectory();
+    final filePath =
+        '${dir.path}/thumbnail_${DateTime.now().millisecondsSinceEpoch}.jpg';
+    await engine.takeSnapshot(uid: 0, filePath: filePath);
+    await Future.delayed(const Duration(seconds: 3));
+    await _liveStreamRepository.updateThumbnail(streamModel.id, filePath);
   }
 
   Future<void> toggleMic() async {
