@@ -30,8 +30,7 @@ class ChatRepositoryImpl implements ChatRepository {
     String streamId,
   ) async {
     try {
-      final stream = _dataSource.receiveMessages(streamId);
-      return right(stream);
+      return right(_dataSource.receiveMessages(streamId));
     } catch (e) {
       return left(e.toString());
     }
