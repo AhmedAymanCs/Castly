@@ -21,6 +21,16 @@ class LiveStreamDataSourceImpl implements LiveStreamDataSource {
         .collection(AppConstants.streamsCollectionName)
         .doc(streamId)
         .update({'isLive': false});
+
+    final messagesRef = _firestore
+        .collection(AppConstants.streamsCollectionName)
+        .doc(streamId)
+        .collection(AppConstants.messagesCollectionName);
+
+    final snapshots = await messagesRef.get();
+    for (final doc in snapshots.docs) {
+      await doc.reference.delete();
+    }
   }
 
   @override

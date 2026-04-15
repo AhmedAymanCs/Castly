@@ -6,6 +6,8 @@ import 'package:castly/features/streams/live_stream/data/repository/repo.dart';
 import 'package:castly/features/streams/live_stream/logic/cubit.dart';
 import 'package:castly/features/streams/live_stream/presentation/live_stream_screen.dart';
 import 'package:castly/features/profile/presentation/profile_screen.dart';
+import 'package:castly/features/streams/watch_stream/data/repository/repo.dart';
+import 'package:castly/features/streams/watch_stream/logic/cubit.dart';
 import 'package:castly/features/streams/watch_stream/presentation/watch_stream_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:castly/core/database/local/secure_storage/secure_storage_helper.dart';
@@ -57,7 +59,21 @@ class AppRouter {
       case Routes.watchStream:
         final streamModel = settings.arguments as StreamModel;
         return MaterialPageRoute(
-          builder: (_) => WatchPage(streamModel: streamModel),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (_) =>
+                    WatchCubit(streamModel, getIt<WatchStreamRepository>())
+                      ..initAgora(),
+              ),
+              BlocProvider<ChatCubit>(
+                create: (BuildContext context) =>
+                    ChatCubit(getIt<ChatRepository>())
+                      ..receiveMessages(streamModel.id),
+              ),
+            ],
+            child: WatchPage(streamModel: streamModel),
+          ),
         );
 
       default:
