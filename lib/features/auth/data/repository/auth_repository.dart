@@ -53,9 +53,13 @@ class AuthRepositoryImpl implements AuthRepository {
             ...userDoc.data()!,
             'uId': userDoc.id,
           });
+          final String sessionData = jsonEncode(userModel.toJson());
+          await secureStorageHelper.saveData(
+            value: sessionData,
+            key: AppConstants.userTempSession,
+          );
 
           if (rememberMe) {
-            String sessionData = jsonEncode(userModel.toJson());
             await secureStorageHelper.saveUserData(sessionData);
           }
 
@@ -126,8 +130,13 @@ class AuthRepositoryImpl implements AuthRepository {
             'image': userCredential.user!.photoURL,
           });
         }
+        final String sessionData = jsonEncode(userModel.toJson());
+        await secureStorageHelper.saveData(
+          value: sessionData,
+          key: AppConstants.userTempSession,
+        );
+
         if (rememberMe) {
-          String sessionData = jsonEncode(userModel.toJson());
           await secureStorageHelper.saveUserData(sessionData);
         }
 

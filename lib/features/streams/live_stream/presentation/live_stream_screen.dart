@@ -16,136 +16,144 @@ class LiveStreamPage extends StatelessWidget {
         final cubit = context.read<LiveStreamCubit>();
         return Scaffold(
           backgroundColor: Colors.black,
-          body: Stack(
-            children: [
-              // Camera preview
-              if (state.isLive)
-                AgoraVideoView(
-                  controller: VideoViewController(
-                    rtcEngine: cubit.engine,
-                    canvas: const VideoCanvas(uid: 0),
-                  ),
-                )
-              else
-                const SizedBox.expand(),
+          body: GestureDetector(
+            onTap: () {
+              cubit.toggleChatView();
+            },
+            child: Stack(
+              children: [
+                // Camera preview
+                if (state.isLive)
+                  AgoraVideoView(
+                    controller: VideoViewController(
+                      rtcEngine: cubit.engine,
+                      canvas: const VideoCanvas(uid: 0),
+                    ),
+                  )
+                else
+                  const SizedBox.expand(),
 
-              // Top bar
-              Positioned(
-                top: 48,
-                left: 16,
-                right: 16,
-                child: Row(
-                  children: [
-                    if (state.isLive)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: ColorManager.coralPrimary,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.circle, color: Colors.white, size: 8),
-                            SizedBox(width: 4),
-                            Text(
-                              'LIVE',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                // Top bar
+                Positioned(
+                  top: 48,
+                  left: 16,
+                  right: 16,
+                  child: Row(
+                    children: [
+                      if (state.isLive)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: ColorManager.coralPrimary,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.circle, color: Colors.white, size: 8),
+                              SizedBox(width: 4),
+                              Text(
+                                'LIVE',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
                               ),
+                            ],
+                          ),
+                        ),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () async {
+                          await cubit.endStream(context);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: ColorManager.coralPrimary,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Text(
+                            'End',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ],
-                        ),
-                      ),
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: () async {
-                        await cubit.endStream(context);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: ColorManager.coralPrimary,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: const Text(
-                          'End',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Stream title
-              Positioned(
-                top: 100,
-                left: 16,
-                child: Text(
-                  cubit.streamModel.title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    ],
                   ),
                 ),
-              ),
 
-              // Chat overlay
-              Positioned(
-                bottom: 100,
-                left: 16,
-                right: 16,
-                height: 250,
-                child: ChatView(streamId: cubit.streamModel.id),
-              ),
+                // Stream title
+                Positioned(
+                  top: 100,
+                  left: 16,
+                  child: Text(
+                    cubit.streamModel.title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                if (state.isShowChatView)
+                  // Chat overlay
+                  Positioned(
+                    bottom: 100,
+                    left: 16,
+                    right: 16,
+                    height: 250,
+                    child: ChatView(
+                      stream: cubit.streamModel,
+                      user: state.userSession!,
+                    ),
+                  ),
 
-              // Bottom controls
-              Positioned(
-                bottom: 40,
-                left: 16,
-                right: 16,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: cubit.toggleMic,
-                      child: Container(
-                        padding: const EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          state.micMuted ? Icons.mic_off : Icons.mic,
-                          color: Colors.white,
+                // Bottom controls
+                Positioned(
+                  bottom: 40,
+                  left: 16,
+                  right: 16,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: cubit.toggleMic,
+                        child: Container(
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            state.micMuted ? Icons.mic_off : Icons.mic,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Loading indicator
-              if (state.status == LiveStreamStatus.loading)
-                const Center(
-                  child: CircularProgressIndicator(
-                    color: ColorManager.coralPrimary,
+                    ],
                   ),
                 ),
-            ],
+
+                // Loading indicator
+                if (state.status == LiveStreamStatus.loading)
+                  const Center(
+                    child: CircularProgressIndicator(
+                      color: ColorManager.coralPrimary,
+                    ),
+                  ),
+              ],
+            ),
           ),
         );
       },

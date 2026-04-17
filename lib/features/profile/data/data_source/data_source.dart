@@ -80,6 +80,20 @@ class ProfileDataSourceImpl implements ProfileDataSource {
       await secureStorageHelper.deleteData(key: AppConstants.userSession);
       await secureStorageHelper.saveUserData(jsonEncode(userSession));
     }
+    final userSessionTempJson = await secureStorageHelper.getData(
+      key: AppConstants.userTempSession,
+    );
+
+    final userTempSession = jsonDecode(userSessionTempJson!);
+    if (data.name != null) {
+      userTempSession['name'] = data.name;
+    }
+    if (data.image != null) {
+      userTempSession['image'] = urlImage;
+    }
+    await secureStorageHelper.deleteData(key: AppConstants.userTempSession);
+    await secureStorageHelper.saveUserData(jsonEncode(userTempSession));
+
     await firestore
         .collection(AppConstants.usersCollectionName)
         .doc(auth.currentUser!.uid)
@@ -90,6 +104,7 @@ class ProfileDataSourceImpl implements ProfileDataSource {
   Future<void> logout() async {
     await auth.signOut().then((_) {
       secureStorageHelper.deleteData(key: AppConstants.userSession);
+      secureStorageHelper.deleteData(key: AppConstants.userTempSession);
     });
   }
 }

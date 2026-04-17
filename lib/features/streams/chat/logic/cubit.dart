@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:castly/core/models/user_model.dart';
 import 'package:castly/features/streams/chat/data/model/message_model.dart';
 import 'package:castly/features/streams/chat/data/repository/repo.dart';
 import 'package:castly/features/streams/chat/logic/state.dart';
@@ -11,10 +12,16 @@ class ChatCubit extends Cubit<ChatState> {
 
   ChatCubit(this._repository) : super(const ChatState());
 
-  Future<void> sendMessage(String text, String streamId) async {
+  Future<void> sendMessage({
+    required String text,
+    required String streamId,
+    required UserModel user,
+  }) async {
+    if (text.trim().isEmpty) return;
     final MessageModel message = MessageModel(
       message: text,
-      sender: 'Ahmed',
+      sender: user.name!,
+      avatarUrl: user.image,
       timestamp: DateTime.now(),
     );
     final result = await _repository.sendMessage(message, streamId);

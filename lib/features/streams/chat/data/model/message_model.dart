@@ -1,18 +1,21 @@
 class MessageModel {
   final String message;
   final String sender;
+  final String? avatarUrl;
   final DateTime timestamp;
 
   MessageModel({
     required this.message,
     required this.sender,
     required this.timestamp,
+    this.avatarUrl,
   });
   factory MessageModel.fromMap(Map<String, dynamic> map) {
     return MessageModel(
       message: map['message'] ?? '',
       sender: map['sender'] ?? '',
       timestamp: DateTime.parse(map['timestamp'] as String),
+      avatarUrl: map['avatarUrl'] ?? '',
     );
   }
   Map<String, dynamic> toMap() {
@@ -20,6 +23,7 @@ class MessageModel {
       'message': message,
       'sender': sender,
       'timestamp': timestamp.toIso8601String(),
+      'avatarUrl': avatarUrl,
     };
   }
 }

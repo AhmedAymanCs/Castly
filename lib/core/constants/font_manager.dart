@@ -11,6 +11,7 @@ class FontWeightManager {
 }
 
 class FontSize {
+  static double get s10 => min(10.0.sp, 12.0);
   static double get s12 => min(12.0.sp, 14.0);
   static double get s14 => min(14.0.sp, 16.0);
   static double get s16 => min(16.0.sp, 18.0);

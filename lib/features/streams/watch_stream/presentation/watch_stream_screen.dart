@@ -1,10 +1,8 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:castly/core/constants/color_manager.dart';
 import 'package:castly/core/constants/font_manager.dart';
-import 'package:castly/core/di/service_locator.dart';
 import 'package:castly/core/models/stream_model.dart';
 import 'package:castly/features/streams/chat/presentation/chat_view.dart';
-import 'package:castly/features/streams/watch_stream/data/repository/repo.dart';
 import 'package:castly/features/streams/watch_stream/logic/cubit.dart';
 import 'package:castly/features/streams/watch_stream/logic/state.dart';
 import 'package:flutter/material.dart';
@@ -171,14 +169,18 @@ class WatchPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // Chat overlay
-                    Positioned(
-                      bottom: 20,
-                      left: 16,
-                      right: 16,
-                      height: 250,
-                      child: ChatView(streamId: cubit.streamModel.id),
-                    ),
+                    if (state.userSession != null)
+                      // Chat overlay
+                      Positioned(
+                        bottom: 20,
+                        left: 16,
+                        right: 16,
+                        height: 250,
+                        child: ChatView(
+                          stream: cubit.streamModel,
+                          user: state.userSession!,
+                        ),
+                      ),
                     // Stream ended
                     if (state.remoteUid == 0 &&
                         state.status == WatchStatus.watching)

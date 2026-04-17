@@ -1,6 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:castly/core/constants/app_constants.dart';
+import 'package:castly/core/database/local/secure_storage/secure_storage_helper.dart';
+import 'package:castly/core/di/service_locator.dart';
 import 'package:castly/core/models/stream_model.dart';
+import 'package:castly/core/models/user_model.dart';
 import 'package:castly/features/streams/watch_stream/data/repository/repo.dart';
 import 'package:castly/features/streams/watch_stream/logic/state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +18,15 @@ class WatchCubit extends Cubit<WatchState> {
   StreamSubscription? _streamSubscription;
 
   WatchCubit(this.streamModel, this._repository) : super(const WatchState());
+
+  void getUserSession() async {
+    final userSession = await getIt<SecureStorageHelper>().getData(
+      key: AppConstants.userTempSession,
+    );
+    final userData = jsonDecode(userSession!);
+    final user = UserModel.fromJson(userData);
+    emit(state.copyWith(userSession: user));
+  }
 
   Future<void> initAgora() async {
     emit(state.copyWith(status: WatchStatus.loading));
@@ -80,6 +94,10 @@ class WatchCubit extends Cubit<WatchState> {
         ),
       );
     });
+  }
+
+  void toggleChatView() {
+    emit(state.copyWith(isShowChatView: !state.isShowChatView));
   }
 
   Future<void> leaveStream() async {

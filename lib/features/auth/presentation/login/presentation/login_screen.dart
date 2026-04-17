@@ -1,3 +1,5 @@
+import 'package:castly/core/constants/app_constants.dart';
+import 'package:castly/core/database/local/secure_storage/secure_storage_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -142,11 +144,12 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 16.h),
                   BlocConsumer<LoginCubit, LoginState>(
-                    listener: (context, state) {
+                    listener: (context, state) async {
                       if (state.status is FormSuccess) {
-                        final userModel =
-                            (state.status as FormSuccess).userModel;
+                        final userModel = await getIt<SecureStorageHelper>()
+                            .getData(key: AppConstants.userTempSession);
                         Navigator.pushNamedAndRemoveUntil(
+                          // ignore: use_build_context_synchronously
                           context,
                           Routes.home,
                           (_) => false,
@@ -168,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                     builder: (context, state) {
                       LoginCubit cubit = context.read<LoginCubit>();
                       if (state.status is FormLoading) {
-                        return const CircularProgressIndicator();
+                        return const SizedBox();
                       }
                       return GoogleSignInButton(
                         onPressed: () => cubit.signInWithGoogle(),

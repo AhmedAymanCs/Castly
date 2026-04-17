@@ -45,7 +45,8 @@ class AppRouter {
               BlocProvider<LiveStreamCubit>(
                 create: (BuildContext context) =>
                     LiveStreamCubit(streamModel, getIt<LiveStreamRepository>())
-                      ..initAgora(),
+                      ..initAgora()
+                      ..getUserSession(),
               ),
               BlocProvider<ChatCubit>(
                 create: (BuildContext context) =>
@@ -64,6 +65,7 @@ class AppRouter {
               BlocProvider(
                 create: (_) =>
                     WatchCubit(streamModel, getIt<WatchStreamRepository>())
+                      ..getUserSession()
                       ..initAgora(),
               ),
               BlocProvider<ChatCubit>(

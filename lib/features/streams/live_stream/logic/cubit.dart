@@ -1,5 +1,11 @@
+import 'dart:convert';
+
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:castly/core/constants/app_constants.dart';
+import 'package:castly/core/database/local/secure_storage/secure_storage_helper.dart';
+import 'package:castly/core/di/service_locator.dart';
 import 'package:castly/core/models/stream_model.dart';
+import 'package:castly/core/models/user_model.dart';
 import 'package:castly/features/streams/live_stream/data/repository/repo.dart';
 import 'package:castly/features/streams/live_stream/logic/state.dart';
 import 'package:flutter/material.dart';
@@ -81,6 +87,19 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
       },
     );
     emit(state.copyWith(isLive: false));
+  }
+
+  void toggleChatView() {
+    emit(state.copyWith(isShowChatView: !state.isShowChatView));
+  }
+
+  void getUserSession() async {
+    final userSession = await getIt<SecureStorageHelper>().getData(
+      key: AppConstants.userTempSession,
+    );
+    final userData = jsonDecode(userSession!);
+    final user = UserModel.fromJson(userData);
+    emit(state.copyWith(userSession: user));
   }
 
   @override
